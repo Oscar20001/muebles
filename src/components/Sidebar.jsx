@@ -19,7 +19,7 @@ const navItems = [
   { id: 'usuarios', label: 'Usuarios del Sistema', icon: ShieldCheck },
 ];
 
-export default function Sidebar({ currentPage, onNavigate, user, onLogout, alertCount }) {
+export default function Sidebar({ currentPage, onNavigate, user, empresa, onLogout, alertCount }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const NavContent = () => (
@@ -27,11 +27,11 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, alert
       {/* Logo */}
       <div className="px-6 py-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Sofa size={22} className="text-white" />
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 text-xl shadow-inner shadow-white/10">
+            {empresa?.logo || '🛋️'}
           </div>
-          <div>
-            <h2 className="text-white font-extrabold text-base leading-tight">Fábri Muebles</h2>
+          <div className="min-w-0">
+            <h2 className="text-white font-extrabold text-base leading-tight truncate">{empresa?.nombre || 'Fábri Muebles'}</h2>
             <p className="text-white/40 text-xs">Sistema Admin</p>
           </div>
         </div>
@@ -40,8 +40,12 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, alert
       {/* User */}
       <div className="px-4 py-4 border-b border-white/10">
         <div className="flex items-center gap-3 px-2">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">
-            {user?.nombre?.charAt(0) || 'A'}
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+            {user?.genero ? (
+              <span className="text-base">{user.genero}</span>
+            ) : (
+              <span>{user?.avatar || user?.nombre?.charAt(0) || 'A'}</span>
+            )}
           </div>
           <div className="min-w-0">
             <p className="text-white text-sm font-semibold truncate">{user?.nombre || 'Administrador'}</p>
@@ -74,7 +78,10 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, alert
 
       {/* Bottom */}
       <div className="px-3 py-4 border-t border-white/10 space-y-0.5">
-        <button className="sidebar-link w-full text-left">
+        <button 
+          onClick={() => { onNavigate('configuracion'); setMobileOpen(false); }}
+          className={`sidebar-link w-full text-left ${currentPage === 'configuracion' ? 'active' : ''}`}
+        >
           <Settings size={18} />
           <span>Configuración</span>
         </button>
@@ -96,10 +103,10 @@ export default function Sidebar({ currentPage, onNavigate, user, onLogout, alert
       {/* Mobile top bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-sidebar flex items-center justify-between px-4 h-14 shadow-xl">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Sofa size={18} className="text-white" />
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-sm shadow-sm">
+            {empresa?.logo || '🛋️'}
           </div>
-          <span className="text-white font-bold text-sm">Fábri Muebles</span>
+          <span className="text-white font-bold text-sm">{empresa?.nombre || 'Fábri Muebles'}</span>
         </div>
         <button onClick={() => setMobileOpen(!mobileOpen)} className="text-white p-1">
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}

@@ -11,6 +11,7 @@ import Entregas from './pages/Entregas';
 import Trabajadores from './pages/Trabajadores';
 import Usuarios from './pages/Usuarios';
 import Materiales from './pages/Materiales';
+import Configuracion from './pages/Configuracion';
 import Sidebar from './components/Sidebar';
 import { X } from 'lucide-react';
 
@@ -53,6 +54,13 @@ export default function App() {
     { id: 5, fecha: '2026-06-08', material: 'Telas y Tapices Premium', cantidad: 10, costo: 1500 },
     { id: 6, fecha: '2026-06-07', material: 'Pegamento de Madera', cantidad: 2.5, costo: 225 }
   ]);
+
+  const [empresa, setEmpresa] = useState({
+    nombre: 'Fábri Muebles',
+    logo: '🛋️',
+    direccion: 'Av. Álvaro Obregón #123, Culiacán',
+    telefono: '667-888-9900'
+  });
 
   // Notifications
   const [toasts, setToasts] = useState([]);
@@ -147,6 +155,8 @@ export default function App() {
         return <Trabajadores user={user} />;
       case 'usuarios':
         return <Usuarios user={user} />;
+      case 'configuracion':
+        return <Configuracion user={user} setUser={setUser} empresa={empresa} setEmpresa={setEmpresa} addToast={addToast} />;
       default:
         return <Dashboard onNavigate={setCurrentPage} user={user} productos={productos} ventas={ventas} clientes={clientes} creditos={creditos} recordatorios={recordatorios} />;
     }
@@ -158,6 +168,7 @@ export default function App() {
         currentPage={allowedPage}
         onNavigate={setCurrentPage}
         user={user}
+        empresa={empresa}
         onLogout={() => setUser(null)}
         alertCount={alertCount}
       />
